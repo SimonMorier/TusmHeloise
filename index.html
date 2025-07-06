@@ -463,6 +463,19 @@
       function initGame() {
         WORD = WORDS[wordIndex];
         LENGTH = WORD.length;
+
+         // ↓ Ajoute ce bloc ↓
+  if (window.innerWidth <= 480 && LENGTH > 7) {
+    // Calcule une taille de tuile pour tout faire tenir à l’écran
+    const size = `calc((100vw - 2rem) / ${LENGTH})`;
+    document.documentElement.style.setProperty("--tile-size", size);
+    document.documentElement.style.setProperty("--key-size", "2rem");
+  } else {
+    // Valeurs par défaut
+    document.documentElement.style.setProperty("--tile-size", "3rem");
+    document.documentElement.style.setProperty("--key-size", "3rem");
+  }
+  // ↑ Fin du bloc d’ajustement ↑
         currentRow = 0;
         currentCol = 1;
         finished = false;
