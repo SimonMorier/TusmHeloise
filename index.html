@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TusmHeloise</title>
+    <style>
+      :root {
+        --bg: #084c61;
+        --grid-border: #ffffff;
+        --tile-size: 3rem;
+        --key-size: 3rem;
+        --gap: 0.3rem;
+
+        --color-correct: #d64040;
+        --color-present: #f4c93d;
+        --color-absent: #0f5c6f;
+        --color-error: #ff4d4d;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        position: relative; /* pour positionner slides */
+      }
+      /* HEADER */
+      .header {
+        width: 100%;
+        max-width: 24rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 1rem;
+      }
+      /* HEADER */
+      .header {
+        width: 100%;
+        max-width: 24rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 1rem;
+      }
+      .home-btn {
+        position: absolute;
+        left: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        background: #fff;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .home-btn svg {
+        width: 1.4rem;
+        height: 1.4rem;
+        fill: var(--bg);
+      }
+      .logo {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .logo span {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #fff;
+        border-radius: 0.25rem;
+      }
+      .l1 {
+        background: var(--color-correct);
+      }
+      .l2 {
+        background: var(--color-absent);
+      }
+      .l3 {
+        background: var(--color-present);
+        color: #000;
+      }
+      .l4 {
+        background: var(--color-absent);
+      }
+      .l5 {
+        background: var(--color-correct);
+      }
+
+      /* BOARD */
+      #board {
+        display: grid;
+        gap: 0;
+        margin-bottom: 1.4rem;
+      }
+      .row {
+        display: grid;
+        gap: 0;
+      }
+      .tile {
+        width: var(--tile-size);
+        height: var(--tile-size);
+        border: 2px solid var(--grid-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        user-select: none;
+      }
+      .tile.correct {
+        background: var(--color-correct);
+      }
+      .tile.present {
+        background: var(--color-present);
+        color: #000;
+      }
+      .tile.absent {
+        background: var(--color-absent);
+        color: var(--grid-border);
+      }
+      .tile.dot {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* KEYBOARD */
+      #keyboard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--gap);
+        width: 100%;
+        max-width: 24rem;
+      }
+      .krow {
+        display: flex;
+        gap: var(--gap);
+      }
+      .key {
+        width: var(--key-size);
+        height: var(--key-size);
+        border: 2px solid var(--grid-border);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: 600;
+        background: transparent;
+        color: var(--grid-border);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .key.wide {
+        width: calc(var(--key-size) * 1.5 + var(--gap));
+      }
+      .key.correct {
+        background: var(--color-correct);
+      }
+      .key.present {
+        background: var(--color-present);
+        color: #000;
+      }
+      .key.absent {
+        background: var(--color-absent);
+        color: #5e7e88;
+      }
+      @media (max-width: 480px) {
+        .header {
+          margin-bottom: 2.5rem;
+        }
+        #board {
+          margin: 2.5rem 0;
+        }
+        #keyboard {
+          margin-top: 1.5rem;
+        }
+        .krow {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .key {
+          flex: 1 1 calc((100% - 9 * var(--gap)) / 10);
+          max-width: var(--key-size);
+        }
+      }
+
+      /* MESSAGE */
+      #message {
+        margin-top: 0.8rem;
+        min-height: 1.4rem;
+        font-size: 1.25rem;
+        text-align: center;
+        transition: color 0.2s, transform 0.2s;
+      }
+      #message.error {
+        color: var(--color-error);
+        font-weight: 700;
+        text-shadow: 0 0 8px var(--color-error);
+        transform: scale(1.1);
+      }
+
+      /* SHAKE */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+      .row.shake {
+        animation: shake 0.3s ease both;
+      }
+
+      /* CONFETTI */
+      .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        opacity: 0.8;
+        pointer-events: none;
+        animation: fall 2s ease-out forwards;
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(0) rotate(0);
+        }
+        100% {
+          transform: translateY(300px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* POPUPS */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .box {
+        background: var(--bg);
+        border: 2px solid #fff;
+        padding: 1.5rem;
+        border-radius: 0.8rem;
+        text-align: center;
+        width: 90%;
+        max-width: 22rem;
+      }
+      .box h2 {
+        margin-bottom: 0.8rem;
+        font-size: 1.6rem;
+      }
+      .box button {
+        margin: 0.4rem 0.2rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 700;
+        background: #fff;
+        color: var(--bg);
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+      }
+
+      /* SIDEBAR SLIDESHOWS */
+      .slideshow {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 350px;
+        height: 350px; /* taille augmentée */
+        overflow: hidden;
+        border: 2px solid #fff;
+        border-radius: 0.5rem;
+      }
+      .slideshow img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+      .slideshow img.active {
+        opacity: 1;
+      }
+      @media (min-width: 768px) {
+        .slideshow {
+          display: block;
+        }
+        .slideshow.left {
+          left: 1rem;
+        }
+        .slideshow.right {
+          right: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="home-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+      </div>
+      <div class="logo">
+        <span class="l1">H</span><span class="l2">E</span
+        ><span class="l3">L</span><span class="l4">O</span
+        ><span class="l5">I</span>
+      </div>
+    </div>
+
+    <!-- SLIDESHOW GAUCHE -->
+    <div class="slideshow left" id="slideshow-left">
+      <img src="1.jpeg" alt="" class="active" />
+      <img src="2.jpeg" alt="" />
+      <img src="3.jpeg" alt="" />
+      <img src="4.jpeg" alt="" />
+      <img src="5.jpeg" alt="" />
+    </div>
+
+    <!-- PLATEAU ET CLAVIER -->
+    <div id="board"></div>
+    <div id="keyboard"></div>
+    <div id="message"></div>
+
+    <!-- POPUPS -->
+    <div id="popup" class="overlay">
+      <div class="box">
+        <h2 id="pop-msg"></h2>
+        <button id="next-btn">Mot suivant</button
+        ><button id="replay-btn">Rejouer</button>
+      </div>
+    </div>
+    <div id="secret" class="overlay">
+      <div class="box">
+        <h2>
+          Ehe j'ai jamais douté, le chiffre secret est<br />101101<br /><small
+            >boup bip bap, je suis un ordinateur</small
+          >
+        </h2>
+        <button id="restart-btn">Restart</button>
+      </div>
+    </div>
+
+    <!-- SLIDESHOW DROITE -->
+    <div class="slideshow right" id="slideshow-right">
+      <img src="6.jpeg" alt="" class="active" />
+      <img src="7.jpeg" alt="" />
+      <img src="8.jpeg" alt="" />
+      <img src="9.jpeg" alt="" />
+      <img src="10.jpeg" alt="" />
+    </div>
+
+    <p>
+        je t'aime <3
+    </p>
+
+    <script>
+      /********** MOTS DU JEU **********/
+      const WORDS = ["OBSCENE", "TENDANCIEUX", "TITANESQUE", "CADAVERIQUE"];
+      let wordIndex = 0,
+        WORD,
+        LENGTH,
+        currentRow,
+        currentCol,
+        finished,
+        statusMap;
+      const MAX_TRIES = 6;
+      const DICT_URL = "Francais.dic",
+        dictionary = new Set();
+      let dictLoaded = false;
+      const normalize = (s) =>
+        s
+          .replace(/œ/gi, "oe")
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .toUpperCase();
+      fetch(DICT_URL)
+        .then((r) => r.arrayBuffer())
+        .then((buf) => {
+          let t = new TextDecoder("utf-8").decode(buf);
+          if ((t.match(/�/g) || []).length > 10 || !/\n/.test(t))
+            t = new TextDecoder("iso-8859-1").decode(buf);
+          t.split(/\r?\n/).forEach(
+            (w) => w && dictionary.add(normalize(w.trim()))
+          );
+          dictLoaded = true;
+        })
+        .catch((_) => {
+          dictLoaded = true;
+          showMessage("⚠️ Dico indisponible", true);
+        });
+      function isValidWord(w) {
+        return dictLoaded ? dictionary.has(normalize(w)) : true;
+      }
+      /* DOM */
+      const board = document.getElementById("board"),
+        keyboard = document.getElementById("keyboard"),
+        message = document.getElementById("message"),
+        popup = document.getElementById("popup"),
+        popMsg = document.getElementById("pop-msg"),
+        nextBtn = document.getElementById("next-btn"),
+        replayBtn = document.getElementById("replay-btn"),
+        secret = document.getElementById("secret"),
+        restartBtn = document.getElementById("restart-btn");
+      /* build keyboard */ (function () {
+        const layout = [
+          ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P"],
+          ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M"],
+          ["BACK", "W", "X", "C", "V", "B", "N", "ENTER"],
+        ];
+        layout.forEach((r) => {
+          const div = document.createElement("div");
+          div.className = "krow";
+          r.forEach((k) => {
+            const key = document.createElement("div");
+            key.className =
+              "key" + (k === "BACK" || k === "ENTER" ? " wide" : "");
+            key.dataset.key = k;
+            key.textContent = k === "BACK" ? "⌫" : k === "ENTER" ? "⏎" : k;
+            key.onclick = () => handleInput(k);
+            div.appendChild(key);
+          });
+          keyboard.appendChild(div);
+        });
+        document.addEventListener("keydown", (e) => {
+          let k = e.key;
+          if (k === "Backspace") k = "BACK";
+          else if (k === "Enter") k = "ENTER";
+          else k = k.toUpperCase();
+          handleInput(k);
+        });
+      })();
+      function initGame() {
+        WORD = WORDS[wordIndex];
+        LENGTH = WORD.length;
+        currentRow = 0;
+        currentCol = 1;
+        finished = false;
+        statusMap = {};
+        document.documentElement.style.setProperty("--length", LENGTH);
+        board.innerHTML = "";
+        buildGrid();
+        updateDots();
+        keyboard
+          .querySelectorAll(".key")
+          .forEach((k) => k.classList.remove("correct", "present", "absent"));
+        message.textContent = "";
+        popup.style.display = "none";
+        secret.style.display = "none";
+      }
+      function buildGrid() {
+        board.style.gridTemplateRows = `repeat(${MAX_TRIES}, var(--tile-size))`;
+        for (let r = 0; r < MAX_TRIES; r++) {
+          const row = document.createElement("div");
+          row.className = "row";
+          row.style.gridTemplateColumns = `repeat(${LENGTH}, var(--tile-size))`;
+          for (let c = 0; c < LENGTH; c++) {
+            const t = document.createElement("div");
+            t.className = "tile";
+            t.dataset.row = r;
+            t.dataset.col = c;
+            if (r === 0 && c === 0) {
+              t.textContent = WORD[0];
+              t.classList.add("correct");
+            }
+            row.appendChild(t);
+          }
+          board.appendChild(row);
+        }
+      }
+      function showMessage(text, isError = false) {
+        message.textContent = text;
+        message.classList.toggle("error", isError);
+        const rowEl = board.querySelector(`.row:nth-child(${currentRow + 1})`);
+        if (rowEl) {
+          rowEl.classList.remove("shake");
+          void rowEl.offsetWidth;
+          rowEl.classList.add("shake");
+        }
+        setTimeout(() => {
+          message.textContent = "";
+          message.classList.remove("error");
+        }, 1500);
+      }
+      function tile(r, c) {
+        return document.querySelector(
+          `.tile[data-row='${r}'][data-col='${c}']`
+        );
+      }
+      function updateDots() {
+        for (let c = 0; c < LENGTH; c++) {
+          const t = tile(currentRow, c);
+          if (c < currentCol && t.textContent && t.textContent != "•")
+            t.classList.remove("dot");
+          else if (!t.textContent) {
+            t.textContent = "•";
+            t.classList.add("dot");
+          }
+        }
+      }
+      function evaluate(g) {
+        const res = Array(LENGTH).fill("absent"),
+          rem = WORD.split("");
+        for (let i = 0; i < LENGTH; i++)
+          if (g[i] === WORD[i]) {
+            res[i] = "correct";
+            rem[i] = null;
+          }
+        for (let i = 0; i < LENGTH; i++)
+          if (res[i] === "absent") {
+            const idx = rem.indexOf(g[i]);
+            if (idx !== -1) {
+              res[i] = "present";
+              rem[idx] = null;
+            }
+          }
+        return res;
+      }
+      function updateKey(l, s) {
+        const rank = { correct: 3, present: 2, absent: 1 },
+          cur = statusMap[l];
+        if (!cur || rank[s] > rank[cur]) {
+          statusMap[l] = s;
+          const k = document.querySelector(`.key[data-key='${l}']`);
+          if (k) {
+            k.classList.remove("correct", "present", "absent");
+            k.classList.add(s);
+          }
+        }
+      }
+      function handleInput(k) {
+        if (finished) return;
+        if (k === "BACK") {
+          if (currentCol > 1) {
+            currentCol--;
+            tile(currentRow, currentCol).textContent = "";
+          }
+          updateDots();
+          return;
+        }
+        if (k === "ENTER") {
+          if (currentCol !== LENGTH) {
+            showMessage("Mot incomplet", true);
+            return;
+          }
+          submitGuess();
+          return;
+        }
+        if (/^[A-ZÀÂÄÉÈÊËÎÏÔÖÙÛÜÇŒ]$/.test(k)) {
+          if (currentCol < LENGTH) {
+            tile(currentRow, currentCol).textContent = k;
+            currentCol++;
+          }
+        }
+        updateDots();
+      }
+      function submitGuess() {
+        let guess = WORD[0];
+        for (let c = 1; c < LENGTH; c++)
+          guess += tile(currentRow, c).textContent.toUpperCase();
+        if (!isValidWord(guess)) {
+          showMessage("Mot invalide", true);
+          return;
+        }
+        const score = evaluate(guess),
+          next = currentRow + 1;
+        if (next < MAX_TRIES)
+          score.forEach((s, i) => {
+            if (s === "correct") tile(next, i).textContent = guess[i];
+          });
+        score.forEach((s, i) => {
+          const t = tile(currentRow, i);
+          t.classList.add(s);
+          updateKey(guess[i], s);
+        });
+        if (guess === WORD) {
+          endGame(true);
+          return;
+        }
+        currentRow++;
+        currentCol = 1;
+        if (currentRow === MAX_TRIES) {
+          endGame(false);
+          return;
+        }
+        updateDots();
+      }
+      function endGame(win) {
+        if (win) {
+          nextBtn.style.display = "inline-block";
+        } else {
+          nextBtn.style.display = "none";
+        }
+        // Toujours afficher “Rejouer”
+        replayBtn.style.display = "inline-block";
+        finished = true;
+        if (win) launchConfetti();
+        if (wordIndex === WORDS.length - 1) {
+          secret.style.display = "flex";
+        } else {
+          popMsg.textContent = win
+            ? "Bravo ! Des heures de chaumage qui payent !"
+            : `Bouuuh perdu !`;
+          popup.style.display = "flex";
+        }
+      }
+      function launchConfetti() {
+        for (let i = 0; i < 80; i++) {
+          const c = document.createElement("div");
+          c.className = "confetti";
+          c.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+          c.style.left = `${Math.random() * 100}%`;
+          c.style.top = "-10px";
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 2000);
+        }
+      }
+      // SLIDESHOW
+      function initSlideshow(id, interval = 3000) {
+        const el = document.getElementById(id),
+          slides = [...el.querySelectorAll("img")];
+        let idx = 0;
+        setInterval(() => {
+          slides[idx].classList.remove("active");
+          idx = (idx + 1) % slides.length;
+          slides[idx].classList.add("active");
+        }, interval);
+      }
+      window.addEventListener("load", () => {
+        initSlideshow("slideshow-left");
+        initSlideshow("slideshow-right");
+        initGame();
+      });
+
+      // Boutons popup
+      nextBtn.onclick = () => {
+        wordIndex++;
+        popup.style.display = "none";
+        initGame();
+      };
+      replayBtn.onclick = () => {
+        wordIndex = 0;
+        popup.style.display = "none";
+        initGame();
+      };
+      restartBtn.onclick = () => {
+        wordIndex = 0;
+        secret.style.display = "none";
+        initGame();
+      };
+    </script>
+  </body>
+</html>
