@@ -172,11 +172,12 @@
         width: calc(var(--key-size) * 1.5 + var(--gap));
       }
       .key.correct {
-        background: var(--color-correct);
+        background: var(--color-correct) !important;
+        color: #fff !important;
       }
       .key.present {
-        background: var(--color-present);
-        color: #000;
+        background: var(--color-present) !important;
+        color: #000 !important;
       }
       .key.absent {
         background: var(--color-absent);
@@ -381,13 +382,11 @@
       <img src="10.jpeg" alt="" />
     </div>
 
-    <p>
-        je t'aime <3
-    </p>
+    <p>je t'aime <3</p>
 
     <script>
       /********** MOTS DU JEU **********/
-      const WORDS = ["OBSCENE", "TENDANCIEUX", "TITANESQUE", "CADAVERIQUE"];
+      const WORDS = ["BINOUZE", "TYPE", "ANULINGUS"];
       let wordIndex = 0,
         WORD,
         LENGTH,
@@ -465,18 +464,18 @@
         WORD = WORDS[wordIndex];
         LENGTH = WORD.length;
 
-         // ↓ Ajoute ce bloc ↓
-  if (window.innerWidth <= 480 && LENGTH > 7) {
-    // Calcule une taille de tuile pour tout faire tenir à l’écran
-    const size = `calc((100vw - 2rem) / ${LENGTH})`;
-    document.documentElement.style.setProperty("--tile-size", size);
-    document.documentElement.style.setProperty("--key-size", "2rem");
-  } else {
-    // Valeurs par défaut
-    document.documentElement.style.setProperty("--tile-size", "3rem");
-    document.documentElement.style.setProperty("--key-size", "3rem");
-  }
-  // ↑ Fin du bloc d’ajustement ↑
+        // ↓ Ajoute ce bloc ↓
+        if (window.innerWidth <= 480 && LENGTH > 7) {
+          // Calcule une taille de tuile pour tout faire tenir à l’écran
+          const size = `calc((100vw - 2rem) / ${LENGTH})`;
+          document.documentElement.style.setProperty("--tile-size", size);
+          document.documentElement.style.setProperty("--key-size", "2rem");
+        } else {
+          // Valeurs par défaut
+          document.documentElement.style.setProperty("--tile-size", "3rem");
+          document.documentElement.style.setProperty("--key-size", "3rem");
+        }
+        // ↑ Fin du bloc d’ajustement ↑
         currentRow = 0;
         currentCol = 1;
         finished = false;
@@ -643,7 +642,7 @@
           secret.style.display = "flex";
         } else {
           popMsg.textContent = win
-            ? "Bravo ! Des heures de chaumage qui payent !"
+            ? "Bihihi tu pensais que c'etait fini ?"
             : `Bouuuh perdu !`;
           popup.style.display = "flex";
         }
