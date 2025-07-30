@@ -5,7 +5,7 @@ import { Game }            from './game.js';
 
 /* ---------------- Constantes ---------------- */
 const WORDS    = ['ESCALADE','AMOUREUSE','FRIPERIE'];
-const DICT_URL = '../data/francais.dic';
+const DICT_URL = 'data/francais.dic';
 
 /* ---------------- Dictionnaire --------------- */
 window.isValidWord = () => true;          
