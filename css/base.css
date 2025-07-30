@@ -1,0 +1,36 @@
+/* ------------ Base & reset ------------ */
+:root {
+    --bg: #084c61;
+    --grid-border: #ffffff;
+    --tile-size: 3.5rem;
+    --key-size: 3.5rem;
+    --gap: 0.4rem;
+
+    --color-correct: #d64040;
+    --color-present: #f4c93d;
+    --color-absent: #0f5c6f;
+    --color-error: #ff4d4d;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem;
+    position: relative;
+}

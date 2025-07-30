@@ -1,0 +1,204 @@
+/* ------------ Boutons ------------ */
+.btn {
+    all: unset;
+    cursor: pointer;
+}
+
+.btn--home {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: #fff;
+    border-radius: 0.5rem;
+}
+
+.btn--home svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: var(--bg);
+}
+
+/* ------------ Tiles & rows ------------ */
+.row {
+    display: grid;
+    gap: 0;
+}
+
+.tile {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    border: 2px solid var(--grid-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.tile.correct {
+    background: var(--color-correct);
+}
+
+.tile.present {
+    background: var(--color-present);
+    color: #000;
+}
+
+.tile.absent {
+    background: var(--color-absent);
+    color: var(--grid-border);
+}
+
+.tile.dot {
+    color: rgba(255, 255, 255, .4);
+}
+
+/* ------------ Keyboard ------------ */
+.krow {
+    display: flex;
+    gap: var(--gap);
+}
+
+.key {
+    width: var(--key-size);
+    height: var(--key-size);
+    border: 2px solid var(--grid-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: transparent;
+    color: var(--grid-border);
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.key.wide {
+    width: calc(var(--key-size)*1.5 + var(--gap));
+}
+
+.key.correct {
+    background: var(--color-correct) !important;
+    color: #fff !important;
+}
+
+.key.present {
+    background: var(--color-present) !important;
+    color: #000 !important;
+}
+
+.key.absent {
+    background: var(--color-absent);
+    color: #5e7e88;
+}
+
+@media (max-width: 480px) {
+    .krow {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .key {
+        flex: 1 1 calc((100% - 9*var(--gap))/10);
+        max-width: var(--key-size);
+    }
+}
+
+/* ------------ Slideshows ------------ */
+.slideshow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 350px;
+    height: 350px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    border-radius: .5rem;
+}
+
+.slideshow img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .5s ease;
+}
+
+.slideshow img.active {
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .slideshow {
+        display: block;
+    }
+
+    .slideshow--left {
+        left: 1rem;
+    }
+
+    .slideshow--right {
+        right: 1rem;
+    }
+}
+
+/* ------------ Popups & overlay ------------ */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay[hidden] {
+    display: none;
+}
+
+.box {
+    background: var(--bg);
+    border: 2px solid #fff;
+    padding: 1.5rem;
+    border-radius: .8rem;
+    text-align: center;
+    width: 90%;
+    max-width: 22rem;
+}
+
+.box h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.box button {
+    margin: .5rem .3rem;
+    padding: .8rem 1.4rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: #fff;
+    color: var(--bg);
+    border: none;
+    border-radius: .4rem;
+    cursor: pointer;
+}
+
+/* ------------ Confetti ------------ */
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    opacity: .8;
+    pointer-events: none;
+    animation: fall 2s ease-out forwards;
+}

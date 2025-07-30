@@ -1,0 +1,97 @@
+/* ------------ Layout général ------------ */
+.header {
+    width: 100%;
+    max-width: 24rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+@media (max-width: 480px) {
+    .header {
+        margin-bottom: 2.5rem;
+    }
+}
+
+/* Logo (tuiles colorées) */
+.logo {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.logo__tile {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+}
+
+.logo__tile--1,
+.logo__tile--5 {
+    background: var(--color-correct);
+}
+
+.logo__tile--2,
+.logo__tile--4 {
+    background: var(--color-absent);
+}
+
+.logo__tile--3 {
+    background: var(--color-present);
+    color: #000;
+}
+
+/* Board + clavier */
+#board {
+    display: grid;
+    gap: 0;
+    margin-bottom: 1.6rem;
+}
+
+#keyboard {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap);
+    width: 100%;
+    max-width: 24rem;
+}
+
+@media (max-width: 480px) {
+    #board {
+        margin: 2.5rem 0;
+    }
+
+    #keyboard {
+        margin-top: 1.5rem;
+    }
+}
+
+/* Message */
+#message {
+    margin-top: 1rem;
+    min-height: 1.6rem;
+    font-size: 1.4rem;
+    text-align: center;
+    transition: color 0.2s, transform 0.2s;
+}
+
+#message.error {
+    color: var(--color-error);
+    font-weight: 700;
+    text-shadow: 0 0 8px var(--color-error);
+    transform: scale(1.1);
+}
+
+/* Footer cute */
+.love {
+    margin-top: 1rem;
+}
