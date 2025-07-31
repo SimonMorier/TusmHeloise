@@ -5,7 +5,7 @@ import { Game }            from './game.js';
 
 /* ---------------- Constantes ---------------- */
 const WORDS    = ['ESCALADE','AMOUREUSE','FRIPERIE'];
-const DICT_URL = '../francais.dic';
+const DICT_URL = 'francais.dic';
 
 // Expose le chemin dans le contexte global
 window.DICT_URL = DICT_URL;
