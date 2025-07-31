@@ -14,13 +14,13 @@ window.DICT_URL = DICT_URL;
 const ABS_DICT_URL = new URL(DICT_URL, window.location.href).href;
 window.DICT_ABS_URL = ABS_DICT_URL;
 
-console.log('[main.js] ➤ window.DICT_URL =', window.DICT_URL);
-console.log('[main.js] ➤ window.DICT_ABS_URL =', window.DICT_ABS_URL);
-console.log('[main.js] ➤ Démarrage de main.js');
+// console.log('[main.js] ➤ window.DICT_URL =', window.DICT_URL);
+// console.log('[main.js] ➤ window.DICT_ABS_URL =', window.DICT_ABS_URL);
+// console.log('[main.js] ➤ Démarrage de main.js');
 
 /* ---------------- Dictionnaire --------------- */
 window.isValidWord = () => true;  // fallback pendant le chargement
-console.log('[main.js] ➤ Tentative de chargement du dictionnaire à :', ABS_DICT_URL);
+// console.log('[main.js] ➤ Tentative de chargement du dictionnaire à :', ABS_DICT_URL);
 
 loadDictionary(ABS_DICT_URL)
   .then(set => {
@@ -58,16 +58,16 @@ console.log('[main.js] ➤ Références DOM initialisées');
 
 /* ---------------- Clavier -------------------- */
 buildKeyboard(refs.keyboardEl, (k) => {
-  console.log('[main.js] ▶️ Touche pressée :', k);
+  // console.log('[main.js] ▶️ Touche pressée :', k);
   game.handleInput(k);
 });
 
 /* ---------------- Slideshows ----------------- */
-console.log('[main.js] ➤ Initialisation des slideshows');
+// console.log('[main.js] ➤ Initialisation des slideshows');
 initSlideshow('slideshow-left');
 initSlideshow('slideshow-right');
 
 /* ---------------- Jeu ------------------------ */
-console.log('[main.js] ➤ Création de l’instance Game');
+// console.log('[main.js] ➤ Création de l’instance Game');
 const game = new Game(WORDS, refs);
-console.log('[main.js] 🎮 Jeu prêt à être joué');
+// console.log('[main.js] 🎮 Jeu prêt à être joué');
