@@ -139,7 +139,7 @@ export class Game {
 
     if (this.currentIndex === this.words.length-1) secretEl.hidden = false;
     else {
-      popMsgEl.textContent = win ? 'Bon je suis gentil aujourd\'hui ahaha c\'est tropass facile pour toi ;)' : 'Bouuuh perdu !';
+      popMsgEl.textContent = win ? 'Ca vaut pas ton quizz de la mort qui tue mais bonne chance ehe <3' : 'Bouuuh perdu !';
       popupEl.hidden = false;
     }
   }
