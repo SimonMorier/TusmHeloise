@@ -4,7 +4,7 @@ import { initSlideshow }   from './slideshow.js';
 import { Game }            from './game.js';
 
 /* ---------------- Constantes ---------------- */
-const WORDS    = ['DIAPORAMA','FATIGUE','INTERNATIONAL'];
+const WORDS    = ['JAZZ','ASCENSEUR','CANNELLE','CASQUETTE','FRIGORIFIE'];
 const DICT_URL = 'data/francais.dic';
 
 // Expose le chemin dans le contexte global
